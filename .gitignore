@@ -3,3 +3,4 @@ bonus.txt
 /.streamlit
 /data
 /venv
+src/_pycache__/
