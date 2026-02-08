@@ -16,10 +16,6 @@
 ### Local Setup
 
 ```bash
-git clone https://github.com/your-username/real-estate-ai-tutor.git
-cd real-estate-ai-tutor
-pip install -r requirements.txt
-
 # Clone the repository
 git clone https://github.com/your-username/real-estate-ai-tutor.git
 cd real-estate-ai-tutor
