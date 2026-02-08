@@ -1,0 +1,47 @@
+[
+  {
+    "id": "RES-101",
+    "address": "422 Maple Drive, Savannah, GA",
+    "description": "Charming craftsman home with original details. Note: The property line partially overlaps with the neighbor's fence on the north side.",
+    "price": "415,000",
+    "features": "3 beds, 2 baths, 1,800 sqft, 1925 build.",
+    "zoning": "R-1 (Single-Family)",
+    "legal_notes": "Prescriptive easement potential, Lead-paint disclosure required."
+  },
+  {
+    "id": "COM-202",
+    "address": "890 Industrial Blvd, Gary, IN",
+    "description": "Large industrial warehouse with high ceilings. Historically used for metal plating and chemical storage.",
+    "price": "1,100,000",
+    "features": "40,000 sqft, 4 loading docks, Heavy power.",
+    "zoning": "M-2 (Heavy Industrial)",
+    "legal_notes": "Phase II Environmental Assessment recommended due to past use."
+  },
+  {
+    "id": "RES-303",
+    "address": "15 Ocean View Terrace, Malibu, CA",
+    "description": "Luxury coastal property with panoramic views. Property contains a small protected wetland area at the base of the cliff.",
+    "price": "5,400,000",
+    "features": "5 beds, 6 baths, Pool, Guest house.",
+    "zoning": "CR (Coastal Residential)",
+    "legal_notes": "Coastal Commission restrictions apply, Riparian rights included."
+  },
+  {
+    "id": "LAND-404",
+    "address": "Lot 7, Whispering Pines, Boulder, CO",
+    "description": "Unimproved mountain lot with dense pine coverage. Public water and sewer are 200 feet from the property line.",
+    "price": "295,000",
+    "features": "2.5 acres, Sloped terrain, No current structures.",
+    "zoning": "F (Forestry/Rural)",
+    "legal_notes": "Easement for utility extension required, Wildfire mitigation zone."
+  },
+  {
+    "id": "RES-505",
+    "address": "777 Urban Way #4B, Chicago, IL",
+    "description": "Modern loft in a converted textile mill. The HOA has a pending special assessment for roof repairs starting next quarter.",
+    "price": "525,000",
+    "features": "2 beds, 2 baths, Exposed brick, 1 parking spot.",
+    "zoning": "DX-5 (Downtown Mixed-Use)",
+    "legal_notes": "Pending litigation on HOA reserves, Right of first refusal applies."
+  }
+]
