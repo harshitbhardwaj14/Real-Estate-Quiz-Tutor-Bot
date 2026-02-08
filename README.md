@@ -19,3 +19,21 @@
 git clone https://github.com/your-username/real-estate-ai-tutor.git
 cd real-estate-ai-tutor
 pip install -r requirements.txt
+
+# Clone the repository
+git clone https://github.com/your-username/real-estate-ai-tutor.git
+cd real-estate-ai-tutor
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Create Streamlit secrets file
+mkdir .streamlit
+echo 'GEMINI_API_KEY = "your_google_ai_studio_api_key"' > .streamlit/secrets.toml
+
+# Run the application
+streamlit run app.py
+
+# App will be available at:
+# http://localhost:8501
+
