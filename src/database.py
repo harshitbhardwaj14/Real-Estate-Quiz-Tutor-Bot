@@ -25,9 +25,12 @@ def process_and_store_json(json_data, api_key):
     collection.upsert(documents=docs, metadatas=metas, ids=ids)
     return len(docs)
 
-def query_listings(query_text, api_key):
+def query_listings(query_text, api_key, num_results=3): # Changed from 1 to 3
     try:
         collection = get_collection(api_key)
-        results = collection.query(query_texts=[query_text], n_results=1)
-        return results["documents"][0][0] if results["documents"] else None
-    except: return None
+        results = collection.query(query_texts=[query_text], n_results=num_results)
+        # Join multiple listings into one block of text
+        if results and results["documents"]:
+            return "\n---\n".join(results["documents"][0]) 
+    except:
+        return None

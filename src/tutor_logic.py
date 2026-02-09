@@ -1,49 +1,91 @@
 import google.generativeai as genai
+import json
 from .database import query_listings
 
 # 2026 Stable Model Alias
 CURRENT_MODEL = "gemini-2.5-flash"
 
 def generate_question(api_key):
+    """
+    Fetches context and generates a comparative question with hidden metadata.
+    """
     genai.configure(api_key=api_key)
     model = genai.GenerativeModel(CURRENT_MODEL)
     
-    # Randomly pull a property to quiz on
-    context = query_listings("property listing", api_key)
+    # Fetch 3 listings to ensure comparative analysis
+    context = query_listings("diverse property listings", api_key, num_results=3)
     if not context:
-        return None, None, None
+        return None, None, None, None
 
-    # THE ENHANCED PROMPT: Prevents leaking and handles edge cases
     prompt = f"""
-    SYSTEM: You are a Real Estate Licensing Exam Proctor. 
-    CONTEXT: {context}
+    ROLE: Senior Real Estate Licensing Instructor.
+    DATASET: {context}
     
-    TASK: Generate 1 tricky Multiple Choice Question (MCQ).
+    TASK: Generate ONE 'Comparative Analysis' MCQ.
     
-    EDGE CASE RULES:
-    - If the context is missing price or zoning, focus on the property description.
-    - Do NOT mention the answer in the first section.
-    - Create 4 plausible options (A, B, C, D).
+    INSTRUCTIONS:
+    - Compare at least TWO properties on legal/zoning/financial nuances.
+    - Provide 4 options (A, B, C, D).
     
     OUTPUT FORMAT (STRICT):
-    [Question and Options]
+    [Question & Options]
     |||
-    [Correct Letter Only]
+    [Correct Letter]
     |||
-    [Brief Explanation of the correct legal principle]
+    [Learning Objectives list, comma separated]
     """
     
     response = model.generate_content(prompt)
     parts = response.text.split("|||")
     
     if len(parts) >= 3:
-        return parts[0].strip(), parts[1].strip(), parts[2].strip()
-    return response.text, "N/A", "N/A"
+        return parts[0].strip(), parts[1].strip(), parts[2].strip(), context
+    return "Error generating question", "N/A", "N/A", context
 
-def evaluate_answer(user_answer, correct_letter, explanation, api_key):
+def evaluate_answer(api_key, user_data):
     """
-    Simplified evaluation: compares user input to the 'secret' correct letter.
+    Performs a deep assessment using the provided JSON schema.
     """
-    is_correct = user_answer.strip().upper() == correct_letter.strip().upper()
-    feedback = "✅ **Correct!**" if is_correct else f"❌ **Incorrect. The correct answer was {correct_letter}.**"
-    return f"{feedback}\n\n**Legal Insight:** {explanation}"
+    genai.configure(api_key=api_key)
+    model = genai.GenerativeModel(CURRENT_MODEL)
+    
+    # Constructing the sophisticated prompt based on your schema
+    prompt = f"""
+    You are an expert real estate educator. Evaluate this student's response:
+    
+    INPUT DATA:
+    {json.dumps(user_data, indent=2)}
+    
+    INSTRUCTIONS:
+    1. Analyze the response against industry standards.
+    2. If incorrect, provide deep contextual explanations linking to specific property features and regulations.
+    3. Tailor the tone to the user's experience level ({user_data['user_profile']['experience_level']}).
+    
+    RESPONSE FORMAT (STRICT JSON):
+    {{
+      "assessment": {{
+        "correct": boolean,
+        "score": number,
+        "key_concepts": ["concept1", "concept2"],
+        "gap_analysis": "string"
+      }},
+      "explanation": {{
+        "contextual_correction": "string",
+        "industry_insights": "string",
+        "learning_resources": ["link_or_topic1", "link_or_topic2"]
+      }},
+      "personalized_followup": {{
+        "next_question": "string",
+        "suggested_topics": ["topic1", "topic2"]
+      }}
+    }}
+    """
+    
+    response = model.generate_content(prompt)
+    
+    try:
+        # Clean potential markdown backticks from AI response
+        cleaned_json = response.text.replace("```json", "").replace("```", "").strip()
+        return json.loads(cleaned_json)
+    except Exception as e:
+        return {"error": f"JSON Parse Error: {str(e)}", "raw": response.text}
